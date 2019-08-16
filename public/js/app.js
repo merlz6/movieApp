@@ -3,15 +3,19 @@ const app = angular.module('MovieApp', []);
 app.controller('MainController', ['$http', function($http){
   const controller = this;
   this.indexOfEdit = null;
-
+  this.showMovieCard = false;
 //still need to add CRUD for addable movies
 
 
 this.searchForMovie = function(){
   $http({
-
+    method:'GET',
+    url:"http://www.omdbapi.com/?t=" + this.search + "&apikey="
   }).then(function(response){
-      console.log(response);
+      console.log(response.data);
+      controller.foundMovie = response.data
+
+      controller.showMovieCard = true;
   }, function(error){
     console.log(error);
   })
@@ -75,6 +79,8 @@ this.createUser = function(){
       console.log(error);
     })
   }
+
+
 
 
 
