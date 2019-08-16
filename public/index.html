@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" ng-app="MovieApp">
+  <head>
+    <meta charset="utf-8">
+    <title>movieList</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js" charset="utf-8"></script>
+    <script src="/js/app.js" charset="utf-8"></script>
+    <link href="/css/styles.css" rel="stylesheet">
+  </head>
+  <body ng-controller="MainController as ctrl">
+    <div ng-if="ctrl.loggedInUsername">
+        Welcome, {{ctrl.loggedInUsername}}
+      </div>
+      <h2>Create User</h2>
+      <form ng-submit="ctrl.createUser()">
+        <input type="text" ng-model="ctrl.username"/>
+        <input type="password" ng-model="ctrl.password"/>
+        <input type="submit" value="Create User"/>
+      </form>
+      <h2>Log In</h2>
+      <form ng-submit="ctrl.logIn()">
+        <input type="text" ng-model="ctrl.username"/>
+        <input type="password" ng-model="ctrl.password"/>
+        <input type="submit" value="Log In"/>
+      </form>
+      <form ng-submit="ctrl.logOut()">
+        <input type="submit" value="Logout"/>
+      </form>
+  </body>
+</html>
