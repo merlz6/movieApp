@@ -18,12 +18,13 @@
   <!-- NAV/MOBILE NAV -->
   <nav class="#424242 grey darken-3">
     <div class="nav-wrapper">
-      <a href="#!" class="brand-logo">WatchList</a>
+      <a href="#" class="brand-logo">WatchList</a>
       <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
       <ul class="right hide-on-med-and-down">
-        <li><a href="sass.html">Search</a></li>
-        <li><a href="badges.html">Next Up</a></li>
-        <li><a href="collapsible.html">Recently Watched</a></li>
+        <li><a href="#" ng-if="ctrl.loggedInUsername">Search</a></li>
+        <li><a href="#" ng-if="ctrl.loggedInUsername" ng-click="ctrl.toggleWatchList()">Next Up</a></li>
+        <li><a href="#" ng-if="ctrl.loggedInUsername" ng-click="ctrl.logOut()">Log Out</a></li>
+        <li><a href="#" ng-if="!ctrl.loggedInUsername">Log In</a></li>
       </ul>
     </div>
   </nav>
@@ -40,7 +41,7 @@
     <div ng-if="ctrl.loggedInUsername">
 
       Welcome, {{ctrl.loggedInUsername}}
-
+<!-- Beginning OF SHOW MOVIE CARD FROM SEARCH -->
       <form ng-submit="ctrl.searchForMovie()">
         <input type="text" ng-model="ctrl.search" />
         <input type="submit" value="Search" />
@@ -48,11 +49,11 @@
       <div ng-if="ctrl.showMovieCard">
         <div class="row">
           <div class="col s12 m6">
-            <div class="card">
+            <div class="card medium">
               <div class="card-image">
                 <img src="{{ctrl.foundMovie.Poster}}">
                 <span class="card-title">{{ctrl.foundMovie.Title}}</span>
-                <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
+                <a ng-click="ctrl.saveMovie()"class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
               </div>
               <div class="card-content">
                 <h5>Year:</h5>
@@ -87,10 +88,65 @@
           </div>
         </div>
       </div>
+<!-- END OF SHOW MOVIE CARD FROM SEARCH -->
 
-      <form ng-submit="ctrl.logOut()">
-        <input type="submit" value="Logout" />
-      </form>
+<!-- Beginning of WATCH LIST -->
+<div class="watchListContainer" ng-if="ctrl.showWatchList">
+  <div ng-repeat="movie in ctrl.allMovies" class="col s12 m7">
+    <h2 class="header">{{movie.Title}}</h2>
+    <div class="card horizontal">
+      <div class="card-image">
+        <img src="{{movie.Poster}}">
+      </div>
+      <div class="card-stacked">
+        <div class="card-content">
+          <p>
+            Year Released:<span>{{movie.Year}}</span>
+          </p>
+          <p>
+            Runtime:<span>{{movie.RunTime}}</span>
+          </p>
+          <p>
+            Genre:<span>{{movie.Genre}}</span>
+          </p>
+          <h5>Plot:</h5>
+          <p>{{movie.Plot}}</p>
+          <h5>
+            Actors:  </h5> <p> {{movie.Actors}}</p>
+
+
+          <div class="watchListMovieRatingsBox">
+            <div>
+              <img class="ratingsImg" src="./images/imdb.svg" />
+              <p>
+                {{movie.Ratings[0].Value}}
+              </p>
+            </div>
+            <div>
+              <img src="https://www.rottentomatoes.com/static/images/icons/cf-lg.png" class="ratingsImg" />
+              <p>
+                {{movie.Ratings[1].Value}}
+              </p>
+            </div>
+            <div>
+              <h5>MetaCritic</h5>
+              <p>
+                {{movie.Ratings[2].Value}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="card-action deleteHolder red">
+          <a href="#" ng-click="ctrl.deleteMovie(movie)" >Delete</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- End of WATCH LIST -->
+
 
       <!-- END of ng-if logged in -->
     </div>
@@ -115,7 +171,7 @@
 
 
   <!-- materialize JS scripts -->
-  <script type="text/javascript" src="js/materialize.min.js"></script>
+  <!-- <script type="text/javascript" src="js/materialize.min.js"></script> -->
 </body>
 
 </html>

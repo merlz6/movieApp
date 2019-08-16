@@ -4,8 +4,8 @@ app.controller('MainController', ['$http', function($http){
   const controller = this;
   this.indexOfEdit = null;
   this.showMovieCard = false;
-//still need to add CRUD for addable movies
-
+  this.foundMovie;
+  this.showWatchList = false;
 
 this.searchForMovie = function(){
   $http({
@@ -21,7 +21,26 @@ this.searchForMovie = function(){
   })
 }
 
+this.getAllMovies = function(){
+  $http({
+  method:'GET',
+  url: '/movie'
+}).then(function(response){
+  console.log(response.data);
+  controller.allMovies = response.data
+}, error=>{
+        console.log(error);
+    })
+}
 
+// toggle watchlist
+this.toggleWatchList = function(){
+
+  controller.showWatchList = !controller.showWatchList
+  this.showMovieCard =  false;
+  console.log(this.showMovieCard)
+  controller.getAllMovies()
+}
 
 // Create user
 this.createUser = function(){
@@ -53,7 +72,7 @@ this.createUser = function(){
         password: this.password
       }
     }).then(function(response){
-      console.log(response);
+      // console.log(response);
       controller.username = null;
       controller.password = null;
       controller.loggedInUsername = response.data.userData.username
@@ -81,7 +100,43 @@ this.createUser = function(){
   }
 
 
+// CREATE ROUTE
+this.saveMovie = function(){
+  $http({
+    method:'POST',
+    url:'/movie',
+    data:{
+      Title:controller.foundMovie.Title,
+    Year:controller.foundMovie.Year,
+    Rated:controller.foundMovie.Rated,
+    Released:controller.foundMovie.Released,
+    RunTime:controller.foundMovie.Runtime,
+    Genre:controller.foundMovie.Genre,
+    Actors:controller.foundMovie.Actors,
+    Poster:controller.foundMovie.Poster,
+    Ratings:controller.foundMovie.Ratings,
+    Plot:controller.foundMovie.Plot
+    }
+  }).then(function(response){
+    console.log(response)
+  }, function(error){
+    console.log(error)
+  })
+}
+
+this.deleteMovie = function(movie){
+  $http({
+    method:'DELETE',
+    url:'/movie/'+ movie._id
+  }).then(function(response){
+    console.log('deleted')
+    // controller.getMovies();
+  })
+}
 
 
+
+
+this.getAllMovies()
 
   }])
