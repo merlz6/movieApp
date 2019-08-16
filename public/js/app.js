@@ -6,16 +6,19 @@ app.controller('MainController', ['$http', function($http){
   this.showMovieCard = false;
   this.foundMovie;
   this.showWatchList = false;
+  this.showSearchBar = true;
 
 this.searchForMovie = function(){
   $http({
     method:'GET',
+    // add OMDB API KEY BELOW
     url:"http://www.omdbapi.com/?t=" + this.search + "&apikey="
   }).then(function(response){
       console.log(response.data);
       controller.foundMovie = response.data
 
       controller.showMovieCard = true;
+      controller.search = ''
   }, function(error){
     console.log(error);
   })
@@ -38,8 +41,16 @@ this.toggleWatchList = function(){
 
   controller.showWatchList = !controller.showWatchList
   this.showMovieCard =  false;
-  console.log(this.showMovieCard)
+  this.showSearchBar = false;
+
   controller.getAllMovies()
+}
+// toggle search
+this.toggleSearchBar = function(){
+
+  controller.showWatchList = false;
+  this.showMovieCard =  false;
+  this.showSearchBar = true;
 }
 
 // Create user

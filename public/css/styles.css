@@ -26,3 +26,8 @@ body {
 .deleteHolder{
   text-align: center;
 }
+
+.foundMovieInfoDivs {
+  display: flex;
+  flex-direction: row;
+}

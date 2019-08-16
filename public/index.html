@@ -21,7 +21,7 @@
       <a href="#" class="brand-logo">WatchList</a>
       <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
       <ul class="right hide-on-med-and-down">
-        <li><a href="#" ng-if="ctrl.loggedInUsername">Search</a></li>
+        <li><a href="#" ng-if="ctrl.loggedInUsername" ng-click="ctrl.toggleSearchBar()">Search</a></li>
         <li><a href="#" ng-if="ctrl.loggedInUsername" ng-click="ctrl.toggleWatchList()">Next Up</a></li>
         <li><a href="#" ng-if="ctrl.loggedInUsername" ng-click="ctrl.logOut()">Log Out</a></li>
         <li><a href="#" ng-if="!ctrl.loggedInUsername">Log In</a></li>
@@ -30,7 +30,7 @@
   </nav>
 
   <ul class="sidenav" id="mobile-demo">
-    <li><a href="sass.html">Search</a></li>
+    <li><a href="">Search</a></li>
     <li><a href="badges.html">Next Up</a></li>
     <li><a href="collapsible.html">Recently Watched</a></li>
   </ul>
@@ -41,46 +41,59 @@
     <div ng-if="ctrl.loggedInUsername">
 
       Welcome, {{ctrl.loggedInUsername}}
-<!-- Beginning OF SHOW MOVIE CARD FROM SEARCH -->
-      <form ng-submit="ctrl.searchForMovie()">
-        <input type="text" ng-model="ctrl.search" />
-        <input type="submit" value="Search" />
-      </form>
+      <!-- Beginning OF SHOW MOVIE CARD FROM SEARCH -->
+      <div class="searchBar" ng-if="ctrl.showSearchBar">
+        <form ng-submit="ctrl.searchForMovie()">
+          <input type="text" ng-model="ctrl.search" />
+          <input type="submit" value="Search" />
+        </form>
+      </div>
       <div ng-if="ctrl.showMovieCard">
-        <div class="row">
-          <div class="col s12 m6">
-            <div class="card medium">
-              <div class="card-image">
-                <img src="{{ctrl.foundMovie.Poster}}">
-                <span class="card-title">{{ctrl.foundMovie.Title}}</span>
-                <a ng-click="ctrl.saveMovie()"class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
-              </div>
+        <div class="col s12 m7">
+          <h2 class="header center">{{ctrl.foundMovie.Title}}</h2>
+          <div class="card horizontal">
+            <div class="card-image">
+              <img src="{{ctrl.foundMovie.Poster}}">
+            </div>
+            <div class="card-stacked">
               <div class="card-content">
-                <h5>Year:</h5>
-                <p>{{ctrl.foundMovie.Year}}</p>
-                <h5>Runtime:</h5>
-                <p>{{ctrl.foundMovie.Runtime}}</p>
+                <div class="card-action">
+                  <a ng-click="ctrl.saveMovie()" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
+                </div>
+                <div class="foundMovieInfoDivs">
+                  <p>Year: {{ctrl.foundMovie.Year}}</p>
 
-                <h5>Actors:</h5>
-                <p>{{ctrl.foundMovie.Actors}}</p>
-                <h5>Plot:</h5>
-                <p>{{ctrl.foundMovie.Plot}}</p>
-                <div class="movieRatingDiv">
-                  <div class="scoreDiv">
-                    <h4>{{ctrl.foundMovie.Ratings[0].Source}}</h4>
-                    <h5>{{ctrl.foundMovie.Ratings[0].Value}}</h5>
+                </div>
+                <div class="foundMovieInfoDivs">
+                  <p>Runtime: {{ctrl.foundMovie.Runtime}}</p>
+                </div>
+                <div>
+                  <h5>Actors:</h5>
+                  <p>{{ctrl.foundMovie.Actors}}</p>
+                </div>
+                <div>
+                  <h5>Plot:</h5>
+                  <p>{{ctrl.foundMovie.Plot}}</p>
+                </div>
+                <div class="watchListMovieRatingsBox">
+                  <div>
+                    <img class="ratingsImg" src="./images/imdb.svg" />
+                    <p>
+                      {{ctrl.foundMovie.Ratings[0].Value}}
+                    </p>
                   </div>
-                  <div class="scoreDiv">
-                    <h4>{{ctrl.foundMovie.Ratings[1].Source}}</h4>
-                    <h5>{{ctrl.foundMovie.Ratings[1].Value}}</h5>
+                  <div>
+                    <img src="https://www.rottentomatoes.com/static/images/icons/cf-lg.png" class="ratingsImg" />
+                    <p>
+                      {{ctrl.foundMovie.Ratings[1].Value}}
+                    </p>
                   </div>
-                  <div class="scoreDiv">
-                    <h4>{{ctrl.foundMovie.Ratings[2].Source}}</h4>
-                    <h5>{{ctrl.foundMovie.Ratings[2].Value}}</h5>
+                  <div>
+                    <h5>MetaCritic</h5>
+                    <p>
+                      {{ctrl.foundMovie.Ratings[2].Value}}
+                    </p>
                   </div>
-
-
-
                 </div>
 
               </div>
@@ -88,64 +101,69 @@
           </div>
         </div>
       </div>
-<!-- END OF SHOW MOVIE CARD FROM SEARCH -->
-
-<!-- Beginning of WATCH LIST -->
-<div class="watchListContainer" ng-if="ctrl.showWatchList">
-  <div ng-repeat="movie in ctrl.allMovies" class="col s12 m7">
-    <h2 class="header">{{movie.Title}}</h2>
-    <div class="card horizontal">
-      <div class="card-image">
-        <img src="{{movie.Poster}}">
-      </div>
-      <div class="card-stacked">
-        <div class="card-content">
-          <p>
-            Year Released:<span>{{movie.Year}}</span>
-          </p>
-          <p>
-            Runtime:<span>{{movie.RunTime}}</span>
-          </p>
-          <p>
-            Genre:<span>{{movie.Genre}}</span>
-          </p>
-          <h5>Plot:</h5>
-          <p>{{movie.Plot}}</p>
-          <h5>
-            Actors:  </h5> <p> {{movie.Actors}}</p>
 
 
-          <div class="watchListMovieRatingsBox">
-            <div>
-              <img class="ratingsImg" src="./images/imdb.svg" />
-              <p>
-                {{movie.Ratings[0].Value}}
-              </p>
+
+
+      <!-- END OF SHOW MOVIE CARD FROM SEARCH -->
+
+      <!-- Beginning of WATCH LIST -->
+      <div class="watchListContainer" ng-if="ctrl.showWatchList">
+        <div ng-repeat="movie in ctrl.allMovies" class="col s12 m7">
+          <h2 class="header center">{{movie.Title}}</h2>
+          <div class="card horizontal">
+            <div class="card-image">
+              <img src="{{movie.Poster}}">
             </div>
-            <div>
-              <img src="https://www.rottentomatoes.com/static/images/icons/cf-lg.png" class="ratingsImg" />
-              <p>
-                {{movie.Ratings[1].Value}}
-              </p>
-            </div>
-            <div>
-              <h5>MetaCritic</h5>
-              <p>
-                {{movie.Ratings[2].Value}}
-              </p>
+            <div class="card-stacked">
+              <div class="card-content">
+                <p>
+                  Year Released:<span>{{movie.Year}}</span>
+                </p>
+                <p>
+                  Runtime:<span>{{movie.RunTime}}</span>
+                </p>
+                <p>
+                  Genre:<span>{{movie.Genre}}</span>
+                </p>
+                <h5>Plot:</h5>
+                <p>{{movie.Plot}}</p>
+                <h5>
+                  Actors: </h5>
+                <p> {{movie.Actors}}</p>
+
+
+                <div class="watchListMovieRatingsBox">
+                  <div>
+                    <img class="ratingsImg" src="./images/imdb.svg" />
+                    <p>
+                      {{movie.Ratings[0].Value}}
+                    </p>
+                  </div>
+                  <div>
+                    <img src="https://www.rottentomatoes.com/static/images/icons/cf-lg.png" class="ratingsImg" />
+                    <p>
+                      {{movie.Ratings[1].Value}}
+                    </p>
+                  </div>
+                  <div>
+                    <h5>MetaCritic</h5>
+                    <p>
+                      {{movie.Ratings[2].Value}}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="card-action deleteHolder red">
+                <a href="#" ng-click="ctrl.deleteMovie(movie)">Delete</a>
+              </div>
             </div>
           </div>
         </div>
-        <div class="card-action deleteHolder red">
-          <a href="#" ng-click="ctrl.deleteMovie(movie)" >Delete</a>
-        </div>
       </div>
-    </div>
-  </div>
-</div>
 
 
-<!-- End of WATCH LIST -->
+      <!-- End of WATCH LIST -->
 
 
       <!-- END of ng-if logged in -->
